@@ -2,7 +2,7 @@
 #include <LoRa.h>
 #include <WiFi.h> 
 #include "time.h"
-#include <ESP_Mail_Client.h> /* Need to install ESP Mail Client by bintray.com/mobizt */
+#include <ESP_Mail_Client.h> /* Need to install ESP Mail Client by mobizt */
 
 // LoRa pins
 #define SCK     5
