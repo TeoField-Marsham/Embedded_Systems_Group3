@@ -1,15 +1,15 @@
 # Embedded Sensing Systems - Challenge Task: Group3
 Ferhat Arslan, Teo Field-Marsham and Thiago Teixeira dos Santos
 
-This repository implements our solution to the Challenge Task: Smart Mailbox System. 
+This repository implements our solution to the Challenge Task: Smart Mailbox System. We first describe our methodology, the requirements of the project and our initial ideas to meet them. Then we detail, explain, and justify our final implementation and also provide some possible further expansions of our system.
 
 ## Initial ideas
 
 ### Methodology
 
-When we initially started this project, we did not yet know all of the hardware and software components we would have access to, to complete the task. We were provided a list of requirements, but no complete list of tools we would have at our disposal to fulfill them. These we were given gradually as we learnt about them each week in the lectures, starting out with hardware units and then shifting towards software designs. This naturally led to us implementing a top-down design process. First we sketched out how our entire system was going to be structured and then we slowly defined what exactly each hardware component would be and which software we would use for the interactions between them. 
+When we initially started this project, we did not yet know all of the hardware and software components we would have access to, to complete the task. We were provided a list of requirements, but no complete list of tools we would have at our disposal to fulfill them. These we were given to us gradually as we learnt about them each week in the lectures, starting out with hardware units and then shifting towards software designs. This naturally led to us implementing a top-down design process. First we sketched out how our entire system was going to be structured and then we slowly defined what exactly each hardware component would be and which software we would use for the interactions between them. 
 
-#### The requirements
+### The requirements
 The idea is to design a system that can detect when new parcels are deposited in the mailbox. The system should be placed within the mailbox to monitor when letters and parcels are delivered, and update via a (lightweight) wireless protocol a dashboard on a backend system. The system should also notify a user when a new parcel arrives.
 
 ### First setup
@@ -18,40 +18,57 @@ Our first step was coming up with the basic framework of our project. This invol
 
 For our first solution we decided to only work with the upper mailbox which is the intake for letters only. This would require two hardware modules: one in the mailbox and one in the house. The module in the mailbox, is responsible for sensing incoming mail and transmitting this information to the module in the house. The module in the house receives information from the mailbox and then notifies the resident, via email, that they have received physical mail. The reason for the dual module setup, is because the home wifi network, required for sending an email, does not reach the mailbox. 
 
+<!-- I kept these very broad on purpose. in our final implementation we can describe exactly what we used. -->
+
 - In the mailbox: 
-    - Hardware: battery (power bank), esp32, LoRa antenna, motion sensor, reset button
-    - Software: motion sensor register scrip, LoRa sender
+    - Hardware: battery/power source, microprocessor, radio/transmission sender, sensors, reset button
+    - Software: motion sensor register script, reset button register, sender
 - In the house: 
-    - Hardware: LoRa antenna, esp32, power cable connected to a laptop for power
-    - Software: LoRa receiver, User Interface (contains the email forwarding system, logs and our helper tools) 
+    - Hardware: radio/transmission receiver, microprocessor, battery/power source (probably a laptop)
+    - Software: receiver, User Interface (contains the email forwarding system, logs and any other helper tools) 
 
 ## Final implementation overview
 
 ...
 
-## Hardware
+### Hardware
 
 ...
 
 WHEN DISCUSSING POWER MENTION THAT SOME SWISS MAILBOXES ARE OUTDOORS AND IN THE WINTER IF IT SNOWS OR IN THE SUMMER WHEN ITS VERY HOT, THIS COULD EFFECT THE BATTERY
 
-## Software
+#### Hardware components list:
+    - Mailbox module
+        1. USE EXACT MODELS NAMES
+        2. blah blah
+    - House module
+        1. USE EXACT MODELS NAMES
+        2. blah blah
+
+### Software
 
 ...
 
-## Conclusion
+#### Script list:
+    - Mailbox module
+        . SPECIFY EXACT FILES NAMES AND WHAT THEY DO
+        2. blah blah
+    - House module
+        . SPECIFY EXACT FILES NAMES AND WHAT THEY DO
+        2. blah blah
+
+### Conclusion
 
 ...
 
-### Constraints
+### Constraints and further improvements
 
-Given that this was a university level project, we had some constraints when it came to our actual implementation. These were primarily hardware based, because we were provided with the hardware to beat the challenge and not allowed to choose our own. Software is more flexible since we were allowed to use whichever libraries we wanted and there were not limits or rules imposed upon us. 
+Given that this was a university level project, we had some constraints when it came to our actual implementation. These were primarily hardware based, because we were provided with the hardware to beat the challenge and only had limited ability to choose our own. Software is more flexible since we were allowed to use whichever libraries we wanted and there were not limits or rules imposed upon us. 
 
-We were working with a breadboard and wires so our modules were not aesthetically pleasing. 
+What this lead to was primarily a lack of aesthetics and reproducibility. Our modules were exposed motherboards, wires, breadboards and sensors and not fully enclosed modules. This was not a big concern for the house module as there is more space, however the mailbox module does take up some space within the mailbox and could also be knocked around if large letters are pushed into the mailbox. With the right equipment, the work around we theorized for this issue, would be containing the whole module within a long, thin rectangular box, with a window for the motion sensor to look out and a port to charge the battery from. This would allow the entire module to be slid into the very back of the mailbox taking up as little space as possible with no wires to catch on anything. If the mailbox is metal, one could even use magnets to ensure that it cannot be knocked around. 
 
-...
 
-### Further improvements
+#### Further improvements
 
 - **Symmetric key of encryption:**
     In our current implementation, the module in the letter box is locked and cannot be accessed by unauthorized persons. The module in the house is also locked or at least cannot be accessed by unauthorized persons without the user/owner knowing. Additionally, the owner/users email mailbox can be assumed to be secure and therefore the only security weakness in our network is the LoRa transmission between the mailbox module and the house module. 
