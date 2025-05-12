@@ -94,14 +94,13 @@ void sendEmail(const String &timestamp) {
   // Connect to mail service and send
   Serial.println("Sending e-mail...");
   if (!smtp.connect(&smtpConfig)) {
-    Serial.println("  > SMTP connect failed");
+    Serial.println("SMTP connect failed: " + smtp.errorReason());
     return;
   }
   if (!MailClient.sendMail(&smtp, &message)) {
-    Serial.print("  > Error sending: ");
-    Serial.println(smtp.errorReason());
+    Serial.println("Send failed: " + smtp.errorReason());
   } else {
-    Serial.println("  > E-mail sent successfully!");
+    Serial.println("E-mail sent successfully!");
   }
   smtp.closeSession();
 }
@@ -117,12 +116,15 @@ void setup() {
   initTime();
 
   // Configure SMTP session
-  smtpConfig.server.host = SMTP_HOST;
+  smtpConfig.server.host_name = SMTP_HOST;
   smtpConfig.server.port = SMTP_PORT;
   smtpConfig.login.email = AUTHOR_EMAIL;
   smtpConfig.login.password = AUTHOR_PASSWORD;
-  smtpConfig.secure.startTLS = true;  // change if needed
-  smtpConfig.priority = esp_mail_smtp_priority_normal;
+  smtpConfig.login.user_domain   = "";
+  // smtpConfig.secure.startTLS = true;  // change if needed
+  // smtpConfig.priority = esp_mail_smtp_priority_normal;
+
+  MailClient.networkReconnect(true);
 
   // Start the LoRa receiver
   // SPI interface
