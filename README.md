@@ -21,10 +21,10 @@ For our first solution we decided to only work with the upper mailbox which is t
 <!-- I kept these very broad on purpose. in our final implementation we can describe exactly what we used. -->
 
 - In the mailbox: 
-    - Hardware: battery/power source, microprocessor, radio/transmission sender, sensors, reset button
+    - Hardware: battery/power source, micro-controller, radio/transmission sender, sensors, reset button
     - Software: motion sensor register script, reset button register, sender
 - In the house: 
-    - Hardware: radio/transmission receiver, microprocessor, battery/power source (probably a laptop)
+    - Hardware: radio/transmission receiver, micro-controller, battery/power source (probably a laptop)
     - Software: receiver, User Interface (contains the email forwarding system, logs and any other helper tools) 
 
 ## Final implementation overview
