@@ -3,6 +3,10 @@
 #include <WiFi.h> 
 #include "time.h"
 #include <ESP_Mail_Client.h> /* Need to install ESP Mail Client by mobizt */
+#include <WebServer.h>              // add this
+WebServer server(80);               // HTTP server on port 80
+
+String eventLog;    
 
 // SPI/LoRa pins for LilyGO T3 V1.6.1
 #define SCK 5
@@ -52,6 +56,8 @@ void initWiFi() {
     Serial.print(".");
   }
   Serial.println(" connected!");
+  Serial.print("ESP IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 // Determine the local time 
@@ -157,6 +163,27 @@ void setup() {
 
   MailClient.networkReconnect(true);
 
+  // --- start HTTP server ---
+  server.on("/", [&]() {
+    String html =
+      "<!DOCTYPE html><html><head><meta charset='utf-8'>"
+      "<title>Mailbox Event Log</title></head><body>"
+      "<h1>Mailbox Event Log</h1>"
+      "<div id='log'>" + eventLog + "</div>"
+      "<script>"
+      "async function refreshLog() {"
+      "  const res = await fetch('/');"
+      "  const text = await res.text();"
+      "  const match = text.match(/<div id='log'>([\\s\\S]*?)<\\/div>/);"
+      "  if (match) document.getElementById('log').innerHTML = match[1];"
+      "}"
+      "setInterval(refreshLog, 5000);"
+      "</script>"
+      "</body></html>";
+    server.send(200, "text/html", html);
+  });
+  server.begin();
+
   // Configure LoRa pins
   SPI.begin(SCK, MISO, MOSI, SS);
   LoRa.setPins(SS, RST, DIO0);
@@ -171,6 +198,9 @@ void setup() {
 }
 
 void loop() {
+
+  server.handleClient();  // let the web‐server do its work
+
   // Look out for packages
   int packetSize = LoRa.parsePacket();
   if (packetSize > 0) {
@@ -187,9 +217,11 @@ void loop() {
     if (message=="reset"){
       mailCount = 0;
       sendResetEmail(now);
+      eventLog += now + " – Mail collected<br>";
       } else if (message=="newmail"){
       mailCount++;
       sendEmail(now);
+      eventLog += now + " – New mail detected. Current mail count: " + String(mailCount) + "<br>";
     }
     Serial.println(mailCount);
     delay(30000);
