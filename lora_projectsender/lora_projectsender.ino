@@ -12,7 +12,7 @@
 #define RESET_PIN 22
 #define MOTION_PIN 19
 
-#define BAND 866E6  // LoRa: use 915E6 (Americas), 866E6 (Europe), ou 433E6 (Asia)
+#define BAND 915E6  // LoRa: use 915E6 (Americas), 866E6 (Europe), ou 433E6 (Asia)
 
 bool resetPressed = false;
 bool motionDetected = false;
@@ -66,15 +66,18 @@ void loop() {
     resetPressed = false;
 
     delay(5000);  // Interval between resets
-  } else if (motionDetected && !resetPressed){
-    Serial.println("Sending: newmail");
-    LoRa.beginPacket();
-    LoRa.print("newmail");
-    LoRa.endPacket();
+  } else if (motionDetected){
+    delay(5000); //waits 5 seconds to see if the reset button won't be pressed
+    if (!resetPressed){
+      Serial.println("Sending: newmail");
+      LoRa.beginPacket();
+      LoRa.print("newmail");
+      LoRa.endPacket();
 
-    motionDetected = false;
+      motionDetected = false;
 
-    delay(5000);  // Interval
+      delay(5000);  // Interval
+    }
   }
 
   delay(10);
