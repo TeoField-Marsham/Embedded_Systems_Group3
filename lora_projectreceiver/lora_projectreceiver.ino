@@ -1,100 +1,51 @@
-#include <SPI.h> //SPI library for communication with LoRa module
-#include <LoRa.h> //LoRa library
-#include <WiFi.h> //WiFi library for ESP32
-#include <WebServer.h> //Web server library for ESP32
-#include <time.h> //Time library for ESP32
-#include <vector> //Vector library for storing timestamps
-#include "loging_data.h" //WiFi credentials and SMTP settings
+#include <SPI.h>
+#include <LoRa.h>
 
-using namespace std;
+// SPI/LoRa pins for LilyGO T3 V1.6.1
+#define SCK 5
+#define MISO 19
+#define MOSI 27
+#define SS 18     // LoRa NSS
+#define RST 14
+#define DIO0 26
 
-// Pins SPI/LoRa para a LilyGO T3 V1.6.1
-#define SCK 5 //SPI clock pin
-#define MISO 19 //SPI MISO pin
-#define MOSI 27 //SPI MOSI pin
-#define SS 18 //LoRa chip select pin
-#define RST 14 //LoRa reset pin
-#define DIO0 26 //LoRa IRQ pin for packet reception
+#define BAND 866E6  // LoRa: use 915E6 (Americas), 866E6 (Europe), ou 433E6 (Asia)
 
-//frequency for LoRa communication for European region
-#define BAND 868E6 
- // Frequencies LoRa: use 915E6 (Americas), 866E6 (Europa), ou 433E6 (Asia)
+int mailCount = 0;
 
- WebServer server(80);
-
-vector<pair<time_t, String>> loraMessages;  // Vector of timestamp + message pairs
-const int logPeriodHours = 1;  // Log period in hours
 void setup() {
   Serial.begin(115200);
   while (!Serial);
 
- // Connecting to Wi-Fi
-  WiFi.begin(ssid, password);
-  Serial.print("Connecting to WiFi");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("\nWiFi connected.");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-
-// Set up NTP time synchronization
-  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
-  Serial.println("Waiting for NTP sync...");
-  delay(2000);  // delay to allow time sync
-
-  //Web server setup
-  server.on("/", HTTP_GET, []() {
-    time_t nowTime = time(nullptr);
-    time_t threshold = nowTime - (logPeriodHours * 3600);
-
-    String response = "LoRa messages received in the last ";
-    response += String(logPeriodHours);
-    response += " hours:\n";
-
-    int count = 0;
-    for (const auto& entry : loraMessages) {
-      if (entry.first >= threshold) {
-        count++;
-        char timeStr[26];
-        ctime_r(&entry.first, timeStr);  // Convert timestamp to string
-        response += "[" + String(timeStr) + "] ";
-        response += entry.second + "\n";
-      }
-    }
-
-    response = "Count: " + String(count) + "\n" + response;
-    server.send(200, "text/plain", response);
-  });
-  server.begin();
-  Serial.println("Web server started.");
-
+  // Configure LoRa pins
   SPI.begin(SCK, MISO, MOSI, SS);
   LoRa.setPins(SS, RST, DIO0);
 
-  Serial.println("Initializing LoRa Receiver...");
+  Serial.println("Starting LoRa Receiver...");
   if (!LoRa.begin(BAND)) {
-    Serial.println("LoRa init failed. Check connections.");
-    while (true);
+    Serial.println("Fail to start LoRa!");
+    while (1);
   }
-  Serial.println("LoRa started and ready.");
+
+  Serial.println("LoRa successfully initiated! Waiting for packages...");
 }
 
 void loop() {
-  server.handleClient(); 
-
+  // Look out for packages
   int packetSize = LoRa.parsePacket();
-  if (packetSize) {
-    String received = "";
+  if (packetSize > 0) {
+    String message = "";
+
     while (LoRa.available()) {
-      received += (char)LoRa.read();
+      message += (char)LoRa.read();
     }
 
-    time_t now = time(nullptr);
-    loraMessages.push_back({now, received});  //storing timestamp and message
-
-    Serial.print("LoRa message received: ");
-    Serial.println(received);
-  }
+    message.trim(); // Remove any trailing newlines or spaces
+  
+    Serial.print("Mail: ");
+    if (message=="reset"){mailCount = 0;} else if (message=="newmail"){
+      mailCount++;
+    }
+      Serial.println(mailCount);
+    }
 }
