@@ -3,6 +3,22 @@ Ferhat Arslan, Teo Field-Marsham and Thiago Teixeira dos Santos
 
 This repository implements our solution to the Challenge Task: Smart Mailbox System. We first describe our methodology, the requirements of the project and our initial ideas to meet them. Then we detail, explain, and justify our final implementation and also provide some possible further expansions of our system.
 
+### Table of Contents
+
+- [Initial Ideas](#initial-ideas)  
+  - [Methodology](#methodology)  
+  - [The Requirements](#the-requirements)  
+  - [First Setup](#first-setup)  
+- [Final Implementation Overview](#final-implementation-overview)  
+  - [Hardware](#hardware)  
+    - [Hardware Components List](#hardware-components-list)  
+  - [Software](#software)  
+    - [Script List](#script-list)  
+- [Conclusion](#conclusion)  
+- [Constraints and Further Improvements](#constraints-and-further-improvements)  
+  - [Further Improvements](#further-improvements)  
+- [Running the Project Yourself](#running-the-project-yourself)
+
 ## Initial ideas
 
 ### Methodology
@@ -85,4 +101,10 @@ What this lead to was primarily a lack of aesthetics and reproducibility. Our mo
 - **Power options:**
     Currently our mailbox module receives power from a power bank and our house module receives power from a laptop. The mailbox module could be improved only by changing the exact power bank or battery, considering that the typical Swiss mailboxes has no access to any kind of power grid. Depending on the exact specifications of the mailbox module (the amount of sensors, whether the mailbox is indoors or outdoors, etc.) a different battery could improve performance and increase time between charging. If one wanted a fixed power supply, one could technically run a long cable to the mailbox from the nearest outlet (and drill a hole to get the power cable into the mail compartment), however this would be clunky, ugly and simply unnecessary. 
 
-    The house module could however be integrated in a more efficient way. It is much smaller, composed of only an esp32 with an antenna attached to it and a power cable and so it could easily be plugged into any wall outlet. As long as it is still in range of the mailbox, it doesn't matter where exactly it is located in the house. The only concern would be if a user wanted to access the logs, however in a finished product, there wouldn't be any reason for this. 
+    The house module could however be integrated in a more efficient way. It is much smaller, composed of only an esp32 with an antenna attached to it and a power cable and so it could easily be plugged into any wall outlet. As long as it is still in range of the mailbox, it doesn't matter where exactly it is located in the house. The only concern would be if a user wanted to access the logs, however in a finished product, there wouldn't be any reason for this.
+
+  #### Running the project yourself
+
+  ...
+
+  
