@@ -30,12 +30,10 @@ const char* WIFI_PASSWORD = "WIFI_PASSWORD";
 #define AUTHOR_PASSWORD "dnituoohuvehxifs" // The App Password
 
 // Recipient list
-const size_t RECIPIENT_COUNT = 4;
+const size_t RECIPIENT_COUNT = 2;
 String recipients[RECIPIENT_COUNT] = {
-  "teo.field-marsham@student.unisg.ch",
-  "ferhat.arslan@student.unisg.ch",
-  "thiago.teixeira.ismart@gmail.com",
-  "teofieldmarsham@gmail.com"
+  "youremail@youremail.com",
+  "anotheremail@youremail.com"
 };
 
 // NTP time settings (St. Gallen is UTC+1 or UTC+2 DST)
