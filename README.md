@@ -1,13 +1,13 @@
 # Embedded Sensing Systems - Challenge Task: Group3
 Ferhat Arslan, Teo Field-Marsham and Thiago Teixeira dos Santos
 
-This repository implements our solution to the Challenge Task: Smart Mailbox System. We first describe our methodology, the requirements of the project and our initial ideas to meet them. Then we detail, explain, and justify our final implementation and also provide some possible further expansions of our system.
+This repository implements our solution to the Challenge Task: Smart Mailbox System. We first describe our methodology, the requirements of the project and our initial ideas to meet them. Then we detail, explain, and justify our final implementation and also provide some possible further expansions of our system. Lastly, we provide basic instruction to help you build and run our project yourself. 
 
 ### Table of Contents
 
-- [Initial Ideas](#initial-ideas)  
+- [Initial Ideas](#initial-ideas) 
+  - [The Requirements](#the-requirements)   
   - [Methodology](#methodology)  
-  - [The Requirements](#the-requirements)  
   - [First Setup](#first-setup)  
 - [Final Implementation Overview](#final-implementation-overview)  
   - [Hardware](#hardware)  
@@ -21,12 +21,12 @@ This repository implements our solution to the Challenge Task: Smart Mailbox Sys
 
 ## Initial ideas
 
+### The requirements
+The idea is to design a system that can detect when new parcels are deposited in the mailbox. The system should be placed within the mailbox to monitor when letters and parcels are delivered, and update via a (lightweight) wireless protocol a dashboard on a backend system. The system should also notify a user when a new parcel arrives.
+
 ### Methodology
 
 When we initially started this project, we did not yet know all of the hardware and software components we would have access to, to complete the task. We were provided a list of requirements, but no complete list of tools we would have at our disposal to fulfill them. These we were given to us gradually as we learnt about them each week in the lectures, starting out with hardware units and then shifting towards software designs. This naturally led to us implementing a top-down design process. First we sketched out how our entire system was going to be structured and then we slowly defined what exactly each hardware component would be and which software we would use for the interactions between them. 
-
-### The requirements
-The idea is to design a system that can detect when new parcels are deposited in the mailbox. The system should be placed within the mailbox to monitor when letters and parcels are delivered, and update via a (lightweight) wireless protocol a dashboard on a backend system. The system should also notify a user when a new parcel arrives.
 
 ### First setup
 
@@ -37,15 +37,17 @@ For our first solution we decided to only work with the upper mailbox which is t
 <!-- I kept these very broad on purpose. in our final implementation we can describe exactly what we used. -->
 
 - In the mailbox: 
-    - Hardware: battery/power source, micro-controller, radio/transmission sender, sensors, reset button
-    - Software: motion sensor register script, reset button register, sender
+    - Hardware: battery/power source, micro-controller, radio/transmission sender, sensors
+    - Software: motion sensor register script, sender
 - In the house: 
     - Hardware: radio/transmission receiver, micro-controller, battery/power source (probably a laptop)
     - Software: receiver, User Interface (contains the email forwarding system, logs and any other helper tools) 
 
 ## Final implementation overview
 
-...
+Our final implementation ended up closely following most of our initial ideas. We took our first schemes and concepts and concretized them by clearly defining the exact hardware components and writing our code. 
+
+HERE WE SHOULD MENTION THAT WE REALIZED WE WOULD END UP NEEDING THE RESET BUTTON
 
 ### Hardware
 
@@ -63,15 +65,13 @@ WHEN DISCUSSING POWER MENTION THAT SOME SWISS MAILBOXES ARE OUTDOORS AND IN THE 
 
 ### Software
 
-...
+We tried to keep our software as simple as possible. Since the two hardware modules are esp32 based, the code is written in C++. Each esp32 can only run one file at a time, so there are only two files that need to be uploaded and run. The mailbox module's esp32 uses the **lora_projectsender.ino** and the house module's esp32 uses the **lora_projectreciever.ino**. 
 
 #### Script list:
     - Mailbox module
-        . SPECIFY EXACT FILES NAMES AND WHAT THEY DO
-        2. blah blah
+        lora_projectsender.ino
     - House module
-        . SPECIFY EXACT FILES NAMES AND WHAT THEY DO
-        2. blah blah
+        lora_projectreciever.ino
 
 ### Conclusion
 
@@ -82,6 +82,8 @@ WHEN DISCUSSING POWER MENTION THAT SOME SWISS MAILBOXES ARE OUTDOORS AND IN THE 
 Given that this was a university level project, we had some constraints when it came to our actual implementation. These were primarily hardware based, because we were provided with the hardware to beat the challenge and only had limited ability to choose our own. Software is more flexible since we were allowed to use whichever libraries we wanted and there were not limits or rules imposed upon us. 
 
 What this lead to was primarily a lack of aesthetics and reproducibility. Our modules were exposed motherboards, wires, breadboards and sensors and not fully enclosed modules. This was not a big concern for the house module as there is more space, however the mailbox module does take up some space within the mailbox and could also be knocked around if large letters are pushed into the mailbox. With the right equipment, the work around we theorized for this issue, would be containing the whole module within a long, thin rectangular box, with a window for the motion sensor to look out and a port to charge the battery from. This would allow the entire module to be slid into the very back of the mailbox taking up as little space as possible with no wires to catch on anything. If the mailbox is metal, one could even use magnets to ensure that it cannot be knocked around. 
+
+Additionally, our mailbox module had such a low power draw, that the provided power bank would automatically turn off completely after a few seconds of being switched on. In order to work around this, we first increased the power draw by simply adding lots of LED lights to the breadboard, but then we refined the system by replacing all the LEDs with resistors. 
 
 
 #### Further improvements
@@ -103,8 +105,9 @@ What this lead to was primarily a lack of aesthetics and reproducibility. Our mo
 
     The house module could however be integrated in a more efficient way. It is much smaller, composed of only an esp32 with an antenna attached to it and a power cable and so it could easily be plugged into any wall outlet. As long as it is still in range of the mailbox, it doesn't matter where exactly it is located in the house. The only concern would be if a user wanted to access the logs, however in a finished product, there wouldn't be any reason for this.
 
-  #### Running the project yourself
+#### Running the project yourself
 
-  ...
+To run our project yourself, you simply need the code contained in this Github repository and the hardware components list specified in our [hardware section](#hardware).
 
+WRITE ABOUT CHECKING OUR CIRCUIT DIAGRAMS FOR THE HARDWARE SETUP AND THEN JUST GIVE VERY BASIC INSTRUCTIONS SO ANYONE COULD REPLICATE OUR SETUP
   
