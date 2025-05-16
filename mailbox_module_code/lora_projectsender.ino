@@ -1,5 +1,5 @@
 #include <SPI.h>
-#include <LoRa.h>
+#include <LoRa.h> /* Install "LoRa" by Sandeep Mistry */
 
 // SPI/LoRa pins for LilyGO T3 V1.6.1
 #define SCK 5
@@ -12,7 +12,7 @@
 #define RESET_PIN 22
 #define MOTION_PIN 19
 
-#define BAND 915E6  // LoRa: use 915E6 (Americas), 866E6 (Europe), ou 433E6 (Asia)
+#define BAND 915E6
 
 bool resetPressed = false;
 bool motionDetected = false;
@@ -20,16 +20,20 @@ bool motionDetected = false;
 int lastResetTime = 0;
 int lastMotionTime = 0;
 
+// Interrupt service for reset button
 void IRAM_ATTR handleReset() {
   unsigned long now = millis();
+  // Only trigger if more than 3 seconds have passed since last reset
   if (now - lastResetTime > 3000) {
     resetPressed = true;
     lastResetTime = now;
   }
 }
 
+// Interrupt service for motion sensor
 void IRAM_ATTR handleMotion() {
   unsigned long now = millis();
+  // Only trigger if more than 5 seconds have passed since last detection
   if (now - lastMotionTime > 5000) {
     motionDetected = true;
     lastMotionTime = now;
@@ -56,7 +60,7 @@ void setup() {
 }
 
 void loop() {
-
+  // Reset button logic
   if (resetPressed){
     Serial.println("Sending: reset");
     LoRa.beginPacket();
@@ -67,7 +71,7 @@ void loop() {
 
     delay(5000);  // Interval between resets
   } else if (motionDetected){
-    delay(5000); //waits 5 seconds to see if the reset button won't be pressed
+    delay(5000); // Waits 5 seconds to see if the reset button won't be pressed
     if (!resetPressed){
       Serial.println("Sending: newmail");
       LoRa.beginPacket();
@@ -79,6 +83,5 @@ void loop() {
       delay(5000);  // Interval
     }
   }
-
   delay(10);
 }

@@ -1,10 +1,10 @@
 #include <SPI.h>
-#include <LoRa.h>
+#include <LoRa.h> /* Install "LoRa" by Sandeep Mistry */
 #include <WiFi.h> 
 #include "time.h"
-#include <ESP_Mail_Client.h> /* Need to install ESP Mail Client by mobizt */
-#include <WebServer.h>              // add this
-WebServer server(80);               // HTTP server on port 80
+#include <ESP_Mail_Client.h> /* Install "ESP Mail Client" by mobizt */
+#include <WebServer.h>              
+WebServer server(80); // HTTP server on port 80
 
 String eventLog;    
 
@@ -12,14 +12,14 @@ String eventLog;
 #define SCK 5
 #define MISO 19
 #define MOSI 27
-#define SS 18     // LoRa NSS
+#define SS 18
 #define RST 14
 #define DIO0 26
 
-#define BAND 915E6  // LoRa: use 915E6 (Americas), 866E6 (Europe), ou 433E6 (Asia)
+#define BAND 915E6
 
 // Wi-Fi credentials
-/* Add your wifi credentials here */ 
+/* Add your own wifi credentials */ 
 const char* WIFI_SSID     = "WIFI_SSID";
 const char* WIFI_PASSWORD = "WIFI_PASSWORD";
 
@@ -30,13 +30,14 @@ const char* WIFI_PASSWORD = "WIFI_PASSWORD";
 #define AUTHOR_PASSWORD "dnituoohuvehxifs" // The App Password
 
 // Recipient list
+/* Add all users who should receive notifications when a letter arrives */ 
 const size_t RECIPIENT_COUNT = 2;
 String recipients[RECIPIENT_COUNT] = {
   "youremail@youremail.com",
   "anotheremail@youremail.com"
 };
 
-// NTP time settings (St. Gallen is UTC+1 or UTC+2 DST)
+// NTP time settings (currently set for St. Gallen(Central European Summer Time))
 const char* NTP_SERVER = "pool.ntp.org";
 const long  GMT_OFFSET_SEC    = 3600;   // UTC+1
 const int   DST_OFFSET_SEC    = 3600;   // +1h daylight
@@ -161,7 +162,7 @@ void setup() {
 
   MailClient.networkReconnect(true);
 
-  // --- start HTTP server ---
+  // Start HTTP server
   server.on("/", [&]() {
     String html =
       "<!DOCTYPE html><html><head><meta charset='utf-8'>"
@@ -196,8 +197,7 @@ void setup() {
 }
 
 void loop() {
-
-  server.handleClient();  // let the web‐server do its work
+  server.handleClient();
 
   // Look out for packages
   int packetSize = LoRa.parsePacket();
