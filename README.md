@@ -50,16 +50,49 @@ In the following sections the exact specifications, functionalities, and rationa
 
 ### Hardware
 
-WHEN DISCUSSING POWER MENTION THAT SOME SWISS MAILBOXES ARE OUTDOORS AND IN THE WINTER IF IT SNOWS OR IN THE SUMMER WHEN ITS VERY HOT, THIS COULD EFFECT THE BATTERY
-
-
 #### Hardware components list:
-    - Mailbox module
-        1. USE EXACT MODELS NAMES
-        2. blah blah
-    - House module
-        1. USE EXACT MODELS NAMES
-        2. blah blah
+
+###### Mailbox Module
+| Quantity | Component                                                     |
+|----------|---------------------------------------------------------------|
+| 1×       | Solderless Breadboard, MB-102 (830 tie-point)                 |
+| 1×       | PIR Motion Sensor Module, HC-SR501                            |
+| 1×       | LilyGo TTGO Module: LoRa32 868/915 MHz with antenna           |
+| 1×       | Pin Header                                                    |
+| 1×       | Set of F–M and M–M DuPont Jumper Wires                        |
+| 4×       | Resistors                                                     |
+| 1×       | Powerbank (MicroUSB)                                          |
+| 1×       | Button Switch                                                 |
+
+###### House Module
+
+| Quantity | Component                                                     |
+|----------|---------------------------------------------------------------|
+| 1×       | LilyGo TTGO Module: LoRa32 868/915 MHz with antenna           |
+| 1×       | MicroUSB cable and charger                                    |
+
+#### Wiring and Assembly
+
+We start with an easy-to-rewire, flexible solderless breadboard (MB-102). To detect mail or letters, we use a PIR motion sensor module, which measures the infrared light emitted by objects within its field of vision. An alternative would be to use an ultrasonic sensor, which may be suitable for boxes. However, as the letters are quite flat, they could be difficult to recognise. Also, the tolerance is about 3 mm, meaning that some letters may not be recognised. For this reason, we opted for the PIR motion sensor, which consumes little power.
+
+Next, we used the LilyGo, which uses the LoRa32 module and has a long range, making it ideal for a letterbox outside the house or on the street. Alternatives would include using BLE, Wi-Fi or ZigBee. However, due to their shorter range, LoRa was the best option for us, as it has a range of up to 5 km in a dense environment. In addition, the module enters deep sleep mode between transmissions, consuming less than 10 µA of quiescent current and ensuring that the overall energy consumption remains extremely low.
+
+For wiring and assembly, you can take the components used in the hardware components and assemble them as follows:
+
+![Circuit](/images/circuit.jpeg "Circuit")
+
+First wire the hardware components for the mailbox module using the supplied circuit diagramm. Use Wire Jumpers to connect the PIR Motion Sensor to connect to the LilYGo with the antenna and then connect the LilyGo with the breadboard also with wire jumpers. On the breadboard you add a button, make sure to use resistors. Then for the power supply of the LilyGo you can use a power bank and connect it via MicroUSB. One disadvantage of using a power bank is that the capacity of the Li-ion battery decreases in winter when the temperature is below 0°C, and the battery ages faster at temperatures above 40°C. Overall, using a power bank for power supply is easy, cheap and safe. As the power consumption was quite low, the power bank kept switching off. To prevent this, we used four additional resistors to increase the power consumption above the minimum required.
+
+![Circuit](/images/wiring.png "Circuit")
+
+The next step is to insert the mailbox module into the mailbox. Make sure that the motion sensor is optimally positioned and that the button is at the front for easier access.
+
+ ![Mailbox](/images/mailbox.jpeg  "Mailbox")
+
+The mailbox module must now be connected to another LilyGo module, known as the house module, which can be placed inside your house. This enables the mailbox module to send packets to the house module via LoRa. The LilyGo can then be connected to your home's WiFi and send the received information by email or display it on the web server. The house module can be powered by simply connecting it to a charger using a Micro USB cable.
+
+ ![house](/images/house.jpeg  "house")
+
 
 ### Software
 
