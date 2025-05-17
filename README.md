@@ -108,7 +108,7 @@ Additionally, our mailbox module had such a low power draw, that the provided po
 
     The house module could however be integrated in a more efficient way. It is much smaller, composed of only an esp32 with an antenna attached to it and a power cable and so it could easily be plugged into any wall outlet. As long as it is still in range of the mailbox, it doesn't matter where exactly it is located in the house. The only concern would be if a user wanted to access the logs, however in a finished product, there wouldn't be any reason for this.
 
-#### Running the project yourself
+## Running the project yourself
 
 To run our project yourself, you simply need the code contained in this Github repository and the hardware components specified in our [hardware section](#hardware).
 
