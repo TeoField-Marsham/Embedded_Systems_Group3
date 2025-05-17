@@ -45,15 +45,16 @@ For our first solution we decided to only work with the upper mailbox which is t
 
 ## Final implementation overview
 
-Our final implementation ended up closely following most of our initial ideas. We took our first schemes and concepts and concretized them by clearly defining the exact hardware components and writing our code. 
+Our final implementation ended up closely following most of our initial ideas. We took our first schemes and concepts and concretized them by clearly defining the exact hardware components and writing our code. Considering that we approached this project from a top-down perspective, our initial setup was almost perfect and encompassed all hardware and software components we needed aside from one feature: the reset button and corresponding software functionality. The requirements state the need for a dashboard to log ever piece of mail that enters the mailbox, however this running total does not need to be sent to the user every time a letter enters the mailbox. The reset button feature is our solution to separating the dashboard counter from the email notification system's counter and will be explained in more detail in the [software section](#software). 
 
-HERE WE SHOULD MENTION THAT WE REALIZED WE WOULD END UP NEEDING THE RESET BUTTON
+In the following sections the exact specifications, functionalities, and rationale for each individual hardware and software component will be discussed.
 
 ### Hardware
 
 ...
 
 WHEN DISCUSSING POWER MENTION THAT SOME SWISS MAILBOXES ARE OUTDOORS AND IN THE WINTER IF IT SNOWS OR IN THE SUMMER WHEN ITS VERY HOT, THIS COULD EFFECT THE BATTERY
+
 
 #### Hardware components list:
     - Mailbox module
@@ -64,6 +65,8 @@ WHEN DISCUSSING POWER MENTION THAT SOME SWISS MAILBOXES ARE OUTDOORS AND IN THE 
         2. blah blah
 
 ### Software
+
+The software components of our system are critical as they are what allows our hardware to communicate with each other and fulfill their functions so that they are interpretable by human users. They also serve as the overarching framework of the system, integrating its various components and offering a comprehensive perspective on its overall architecture and functionality.
 
 We tried to keep our software as simple as possible. Since the two hardware modules are esp32 based, the code is written in C++. Each esp32 can only run one file at a time, so there are only two files that need to be uploaded and run. The mailbox module's esp32 uses the **lora_projectsender.ino** and the house module's esp32 uses the **lora_projectreciever.ino**. 
 
@@ -107,10 +110,29 @@ Additionally, our mailbox module had such a low power draw, that the provided po
 
 #### Running the project yourself
 
-To run our project yourself, you simply need the code contained in this Github repository and the hardware components list specified in our [hardware section](#hardware).
+To run our project yourself, you simply need the code contained in this Github repository and the hardware components specified in our [hardware section](#hardware).
 
-WRITE ABOUT CHECKING OUR CIRCUIT DIAGRAMS FOR THE HARDWARE SETUP AND THEN JUST GIVE VERY BASIC INSTRUCTIONS SO ANYONE COULD REPLICATE OUR SETUP
-  
-ALSO MENTION THAT COMMENTS IN THE CODE MENTION WHICH EXTENSIONS TO INSTALL AND WHERE TO FILL IN YOUR EMAIL INFO AND WIFI INFO
+Before starting make sure you have Arduino IDE installed on a computer and that the `Tools/Board:` is set to "ESP32 Dev Module". Additionally when plugging in boards, make sure to select the right COM port under `Tools/Port:`.
 
-AND MENTION THAT THE lora_projectsender REQUIRES NO CHANGES BY THE USER TO WORK
+**Step 1:** 
+- Replicate the mailbox module and house module. The complete list of hardware components for each module can be found in the [hardware section](#hardware). Once you have all of the components, use the circuit diagrams and images to assemble each module.
+- Make sure the power bank is fully charged. 
+
+**Step 2:** 
+- Clone this repository.
+
+**Step 3:** 
+- Plug the mailbox module's esp32 into your laptop (detach the power bank for this). 
+- Copy the lora_projectsender into Arduino IDE (no edits to code required).
+- Compile and upload the code onto the esp32, detach the esp32 from the laptop and reattach the power bank.
+
+**Step 4:** 
+- Plug the house module's esp32 into your laptop. 
+- Copy the lora_projectreciever into Arduino IDE. Read the code: download any libraries specified in the comments and fill out all fields the comments specify you to fill out. 
+- Compile and upload the code onto the esp32.
+
+**Step 5:** 
+- Place the mailbox module in your mailbox as far back as you can making sure the sensor is pointing towards the slot.
+
+
+CONTINUE ON FROM HERE
