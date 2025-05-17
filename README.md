@@ -188,7 +188,8 @@ Before starting make sure you have Arduino IDE installed on a computer and that 
 
 **Step 1:** 
 - Replicate the mailbox module and house module. The complete list of hardware components for each module can be found in the [hardware section](#hardware). Once you have all of the components, use the circuit diagrams and images to assemble each module.
-- Make sure the power bank is fully charged. 
+- Make sure the power bank is fully charged.
+- If you notice your powerbank turns off after a few seconds, it may be due to it detecting too low current usage. In order to increase current usage, you can add resistors connected to the Vcc and GND on the protoboard.
 
 **Step 2:** 
 - Clone this repository.
@@ -202,8 +203,17 @@ Before starting make sure you have Arduino IDE installed on a computer and that 
 - Plug the house module's ESP32 into your laptop. 
 - Copy the lora_projectreciever into Arduino IDE. Read the code: download any libraries specified in the comments and fill out all fields the comments specify you to fill out. 
 - Compile and upload the code onto the ESP32.
+- Take note of the IP address shown in the terminal.
 
 **Step 5:** 
 - Place the mailbox module in your mailbox as far back as you can making sure the sensor is pointing towards the slot.
 
-<!--- CONTINUE ON FROM HERE --->
+**Step 6:**
+- Connect the receiver to an electrical plug (or the computer)
+- On a device under the same wi-fi as the receiver, you can insert the IP address noted in Step 4 into a browser to access the webserver. 
+
+**Step 7: Receiving Mail**
+- Receiving a letter should send an email to the registered email address at the receiver and also increase the counter at the webserver.
+
+**Step 8: Retrieving Mail**
+- To retrieve your mail, simply open the compartment and press the button within 10 seconds. This should send an email to the registered email address at the receiver notifying about the mail retrieval and also set the counter at the webserver back to zero.
