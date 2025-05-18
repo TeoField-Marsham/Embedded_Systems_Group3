@@ -23,7 +23,7 @@ This repository implements our solution to the Challenge Task: Smart Mailbox Sys
 ### The requirements
 The idea is to design a system that can detect when new parcels are deposited in the mailbox. The system should be placed within the mailbox to monitor when letters and parcels are delivered, and update via a (lightweight) wireless protocol a dashboard on a backend system. The system should also notify a user when a new parcel arrives.
 
-![SmartMail](/images/SmartMail.png "SmartMail")
+<!-- ![SmartMail](/images/SmartMail.png "SmartMail") -->
 
 ### Methodology
 
@@ -54,7 +54,7 @@ In the following sections the exact specifications, functionalities, and rationa
 
 #### Hardware components list:
 
-###### Mailbox Module
+##### Mailbox Module
 | Quantity | Component                                                     |
 |----------|---------------------------------------------------------------|
 | 1×       | Solderless Breadboard, MB-102 (830 tie-point)                 |
@@ -66,7 +66,7 @@ In the following sections the exact specifications, functionalities, and rationa
 | 1×       | Powerbank (MicroUSB)                                          |
 | 1×       | Button Switch                                                 |
 
-###### House Module
+##### House Module
 
 | Quantity | Component                                                     |
 |----------|---------------------------------------------------------------|
@@ -75,23 +75,23 @@ In the following sections the exact specifications, functionalities, and rationa
 
 #### Wiring and Assembly
 
-We start with an easy-to-rewire, flexible solderless breadboard (MB-102). To detect mail or letters, we use a PIR motion sensor module, which measures the infrared light emitted by objects within its field of vision. An alternative would be to use an ultrasonic sensor, which may be suitable for boxes. However, as the letters are quite flat, they could be difficult to recognise. Also, the tolerance is about 3 mm, meaning that some letters may not be recognised. For this reason, we opted for the PIR motion sensor, which consumes little power.
+Our baseplate for the mailbox module is an easy-to-rewire, flexible solderless breadboard (MB-102). To detect mail or letters, a PIR motion sensor is used, which measures the infrared light emitted by objects within its field of vision. An alternative would be to use an ultrasonic distance sensor, which may be suitable for larger boxes and packages. However, as letters and mail are quite flat, they can be difficult to detect. Ultrasonic distance sensors we had access to had a tolerance of about 3 mm, meaning that thinner letters would potentially not be registered. For this reason, we opted for the PIR motion sensor, which consumes little power.
 
 Next, we used the LilyGo, which uses the LoRa32 module and has a long range, making it ideal for a letterbox outside the house or on the street. Alternatives would include using BLE, Wi-Fi or ZigBee. However, due to their shorter range, LoRa was the best option for us, as it has a range of up to 5 km in a dense environment. In addition, the module enters deep sleep mode between transmissions, consuming less than 10 µA of quiescent current and ensuring that the overall energy consumption remains extremely low.
 
-For wiring and assembly, you can take the components used in the hardware components and assemble them as follows:
+For wiring and assembly, we used the aforementioned hardware components and assembled them as follows:
 
 ![Circuit](/images/circuit.jpeg "Circuit")
 
-First wire the hardware components for the mailbox module using the supplied circuit diagramm. Use Wire Jumpers to connect the PIR Motion Sensor to connect to the LilYGo with the antenna and then connect the LilyGo with the breadboard also with wire jumpers. On the breadboard you add a button, make sure to use resistors. Then for the power supply of the LilyGo you can use a power bank and connect it via MicroUSB. One disadvantage of using a power bank is that the capacity of the Li-ion battery decreases in winter when the temperature is below 0°C, and the battery ages faster at temperatures above 40°C. Overall, using a power bank for power supply is easy, cheap and safe. As the power consumption was quite low, the power bank kept switching off. To prevent this, we used four additional resistors to increase the power consumption above the minimum required.
+The circuit diagram above demonstrates the hardware setup for the mailbox module. Wire Jumpers are used to connect the PIR Motion Sensor to the LilYGo with the antenna and then connect the LilyGo with the breadboard also with wire jumpers. On the breadboard a button with a resistor is used to implement our reset functionality. For the power supply of the LilyGo we used a power bank and connected it via a MicroUSB (which should also be used for programming the ESP32). One disadvantage of using a power bank is that the capacity of the Li-ion battery decreases in winter when the temperature is below 0°C, and the battery ages faster at temperatures above 40°C. If the mailbox is located outside of a building and not in a thermally regulated environment, this needs to be considered when operating the system. Overall, using a power bank for power supply is easy, cheap and safe. As the power consumption is quite low, depending on the power bank used, it may keep switching off. To prevent this, we used four additional resistors to increase the power consumption above the minimum required to keep the power bank from turning off.
 
 ![Circuit](/images/wiring.png "Circuit")
 
-The next step is to insert the mailbox module into the mailbox. Make sure that the motion sensor is optimally positioned and that the button is at the front for easier access.
+The mailbox module can then be inserted into the mailbox. The motion sensor must optimally positioned to capture any movement of the entry flap and incoming mail and the reset button should be placed towards the front for easier access.
 
  ![Mailbox](/images/mailbox.jpeg  "Mailbox")
 
-The mailbox module must now be connected to another LilyGo module, known as the house module, which can be placed inside your house. This enables the mailbox module to send packets to the house module via LoRa. The LilyGo can then be connected to your home's WiFi and send the received information by email or display it on the web server. The house module can be powered by simply connecting it to a charger using a Micro USB cable.
+The mailbox module acts as a sender of information so a second LilyGo module, known as the house module, is required inside the house. This enables the mailbox module to send packets to the house module via LoRa. The house module LilyGo connects to the home's WiFi network and allows sending any received information by email or displaying it on a web server. The house module can be powered by simply connecting it to any wall outlet using a Micro USB cable, making it maintenance free (on the hardware side) when compared to the mailbox module. 
 
  ![house](/images/house.jpeg  "house")
 
@@ -160,7 +160,7 @@ Given that this was a university level project, we had some constraints when it 
 
 What this lead to was primarily a lack of aesthetics and reproducibility. Our modules were exposed motherboards, wires, breadboards and sensors and not fully enclosed modules. This was not a big concern for the house module as there is more space, however the mailbox module does take up some space within the mailbox and could also be knocked around if large letters are pushed into the mailbox. With the right equipment, the work around we theorized for this issue, would be containing the whole module within a long, thin rectangular box, with a window for the motion sensor to look out and a port to charge the battery from. This would allow the entire module to be slid into the very back of the mailbox taking up as little space as possible with no wires to catch on anything. If the mailbox is metal, one could even use magnets to ensure that it cannot be knocked around. 
 
-Additionally, our mailbox module had such a low power draw, that the provided power bank would automatically turn off completely after a few seconds of being switched on. In order to work around this, we first increased the power draw by simply adding lots of LED lights to the breadboard, but then we refined the system by replacing all the LEDs with resistors. 
+Additionally, our mailbox module had such a low power draw, that the provided power bank would automatically turn off completely after a few seconds of being switched on. In order to work around this, we first increased the power draw by simply adding lots of LED lights to the breadboard, but then we refined the system by replacing all the LEDs with resistors. In a non-restricted situation, we would simply pick a battery system that did not have this issue.
 
 
 #### Further improvements
@@ -206,14 +206,14 @@ Before starting make sure you have Arduino IDE installed on a computer and that 
 - Take note of the IP address shown in the terminal.
 
 **Step 5:** 
-- Place the mailbox module in your mailbox as far back as you can making sure the sensor is pointing towards the slot.
+- Place the mailbox module in your mailbox as far back as you can making sure the sensor is pointing towards the slot and the reset button can easily be pressed.
 
 **Step 6:**
-- Connect the receiver to an electrical plug (or the computer)
-- On a device under the same wi-fi as the receiver, you can insert the IP address noted in Step 4 into a browser to access the webserver. 
+- Connect the receiver to an electrical plug (or a computer).
+- On a device connected to the same Wi-Fi network as the receiver, you can enter the IP address noted in Step 4 into a browser to access the webserver. 
 
 **Step 7: Receiving Mail**
-- Receiving a letter should send an email to the registered email address at the receiver and also increase the counter at the webserver.
+- Receiving a letter will send an email to the registered email address from the receiver and also increase the counter at the webserver.
 
 **Step 8: Retrieving Mail**
-- To retrieve your mail, simply open the compartment and press the button within 10 seconds. This should send an email to the registered email address at the receiver notifying about the mail retrieval and also set the counter at the webserver back to zero.
+- To retrieve your mail, simply open the compartment and press the button within 10 seconds. This will send an email to the registered email address from the receiver notifying about the mail retrieval and also set the counter at the webserver back to zero.
