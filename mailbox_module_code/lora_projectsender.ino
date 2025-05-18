@@ -71,7 +71,7 @@ void loop() {
 
     delay(5000);  // Interval between resets
   } else if (motionDetected){
-    delay(5000); // Waits 5 seconds to see if the reset button won't be pressed
+    delay(15000); // Waits 5 seconds to see if the reset button won't be pressed
     if (!resetPressed){
       Serial.println("Sending: newmail");
       LoRa.beginPacket();
