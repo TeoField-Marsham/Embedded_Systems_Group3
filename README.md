@@ -62,7 +62,7 @@ In the following sections the exact specifications, functionalities, and rationa
 | 1×       | LilyGo TTGO Module: LoRa32 868/915 MHz with antenna           |
 | 1×       | Pin Header                                                    |
 | 1×       | Set of F–M and M–M DuPont Jumper Wires                        |
-| 4×       | Resistors                                                     |
+| 5×       | Resistors                                                     |
 | 1×       | Powerbank (MicroUSB)                                          |
 | 1×       | Button Switch                                                 |
 
